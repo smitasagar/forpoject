@@ -1,0 +1,61 @@
+#include<pthread.h>
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+#include<time.h>
+
+int count=0;
+pthread_mutex_t l;
+
+int fun1();
+int fun2();
+int fun3();
+
+int main()
+{
+pthread_t t1;
+pthread_t t2;
+pthread_t t3;
+
+pthread_create(&t1,NULL,fun1,NULL);
+pthread_create(&t2,NULL,fun1,NULL);
+pthread_create(&t3,NULL,fun1,NULL);
+
+pthread_join(t1,NULL);
+pthread_join(t2,NULL);
+pthread_join(t3,NULL);
+
+printf("this is os project");
+}
+
+int fun1()
+{
+pthread_mutex_lock(&l);
+int r1;
+int pi;
+   float x1,y1;
+   int i; 
+   float z1; 
+   r1=count;                                     
+   printf("Enter the number of iterations:");
+   scanf("%d",&pi);
+
+   srand((unsigned)time(NULL));
+   
+   for ( i=0; i<pi; i++) {
+      x1 = (float)rand()/RAND_MAX*2-1;
+      y1 = (float)rand()/RAND_MAX*2-1;
+      z1 = x1*x1+y1*y1;
+      if (z1<=1) 
+      {
+        r1++;
+        count=r1;
+       }
+printf("x1:%f,y1:%f,z1:%f\n",x1,y1,z1);
+}
+printf("\n the value of count of points inside the circle is %d",count);
+pthread_mutex_unlock(&l);
+}
+
